@@ -39,6 +39,28 @@ async def show_original_title():
     return original_titles
 
 
-# Get request #2 to get the longitudes and latitudes of a specific point from google maps
 
+# Get request #2 to get the longitudes and latitudes of a specific point from google maps
+URL = "https://api.bigdatacloud.net/data/reverse-geocode-client"
+
+latitude = -1.2994786596965737
+longitude = 36.79427519625748
+PARAMS = {'latitude': latitude, 'longitude': longitude}
+
+@app.get("/location")
+def get_location():
+    r = requests.get(url = URL, params = PARAMS)
+    data = r.json()
+
+    if data:
+        location1 = {
+            "continent": data['continent'],
+            "countryName": data['countryName'],
+            "city": data['city']
+        }
+        return location1
+    else:
+        print("error:Location not found")   
+  
+# Get request # 3 Using query and path parameters on the location api
 
