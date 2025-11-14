@@ -10,6 +10,8 @@ popularity = []
 release_date = []
 original_titles = []
 
+
+# GET request #1 to get the longitudes and latitudes of a specific point from google maps
 @app.get("/")
 async def root():
     response = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=256da2d742d5a5979790e6833447e4b4")
@@ -30,6 +32,7 @@ async def root():
     return movie_description
 
 
+# GET request #2 to get the longitudes and latitudes of a specific point from google maps
 @app.get("/titles")
 async def show_original_title():
     response = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=256da2d742d5a5979790e6833447e4b4")
@@ -40,12 +43,12 @@ async def show_original_title():
 
 
 
-# Get request #2 to get the longitudes and latitudes of a specific point from google maps
+# GET request #3 to get the longitudes and latitudes of a specific point from google maps
 URL = "https://api.bigdatacloud.net/data/reverse-geocode-client"
 
-latitude = -1.2994786596965737
-longitude = 36.79427519625748
-PARAMS = {'latitude': latitude, 'longitude': longitude}
+latitude1 = -1.2994786596965737
+longitude2 = 36.79427519625748
+PARAMS = {'latitude': latitude1, 'longitude': longitude2}
 
 @app.get("/location")
 def get_location():
@@ -62,5 +65,21 @@ def get_location():
     else:
         print("error:Location not found")   
   
-# Get request # 3 Using query and path parameters on the location api
+# GET request # 4 Using query and path parameters on the location api
+@app.get("/location/{latitude},{longitude}")
+def get_location_by_coordinates(latitude: float, longitude: float):
+    r = requests.get(url = URL, params = {'latitude': latitude , 'longitude': longitude})
+    data = r.json()
+
+    location2 = {
+        "continent": data['continent'],
+        "countryName": data['countryName'],
+        "city": data['city'],
+        "locality": data['locality'],
+        "administrative": data['localityInfo']['administrative']
+        
+    }
+    return location2
+    
+# POST request #2 to get the longitudes and latitudes of a specific point from google maps
 
